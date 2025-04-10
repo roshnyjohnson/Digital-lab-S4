@@ -1,0 +1,40 @@
+module fulladder_struct (
+    input a,
+    input b,
+    input cin,
+    output s,
+    output c
+);
+    wire w1, w2, w3;
+
+    // Sum logic using two half adders
+    xor (w1, a, b);
+    xor (s, w1, cin);
+
+    // Carry logic
+    and (w2, a, b);
+    and (w3, w1, cin);
+    or  (c, w2, w3);
+endmodule
+
+//tb
+module fulladder_struct_tb;
+    reg a, b, cin;
+    wire s, c;
+
+    fulladder_struct fa1(a, b, cin, s, c);
+
+    initial begin
+        $display("A B Cin | Sum Carry");
+        $monitor("%b %b  %b  |  %b    %b", a, b, cin, s, c);
+        a=0; b=0; cin=0;
+        #10 a=0; b=0; cin=1;
+        #10 a=0; b=1; cin=0;
+        #10 a=0; b=1; cin=1;
+        #10 a=1; b=0; cin=0;
+        #10 a=1; b=0; cin=1;
+        #10 a=1; b=1; cin=0;
+        #10 a=1; b=1; cin=1;
+        #10 $finish;
+    end
+endmodule
